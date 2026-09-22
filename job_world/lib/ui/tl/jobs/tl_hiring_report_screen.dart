@@ -52,34 +52,10 @@ class TlHiringReportScreen extends StatelessWidget {
                 ),
               ),
               Dimensions.verticalSpace(context, 16),
-              _reportRow(context, "Resume Screening", "Cleared", const Color(0xFF16A34A), const Color(0xFFDCFCE7)),
-              const SizedBox(height: 12),
-              _reportRow(context, "Technical Round", "Cleared", const Color(0xFF16A34A), const Color(0xFFDCFCE7)),
-              const SizedBox(height: 12),
-              _reportRow(context, "HR Round", "Awaiting Feedback", const Color(0xFFD97706), const Color(0xFFFEF3C7)),
-              Dimensions.verticalSpace(context, 20),
-              const Text("Interviewer Notes", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF0F172A))),
-              const SizedBox(height: 10),
-              TlCard(
-                child: Text(
-                  "Strong fundamentals and clear communication. Recommended for the next round with the reporting manager.",
-                  style: TextStyle(fontSize: 13, color: Colors.grey.shade600, height: 1.5),
-                ),
-              ),
+              const TlNoDataFound(),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _reportRow(BuildContext context, String title, String status, Color color, Color bg) {
-    return TlCard(
-      child: Row(
-        children: [
-          Expanded(child: Text(title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Color(0xFF0F172A)))),
-          TlStatusChip(label: status, background: bg, foreground: color),
-        ],
       ),
     );
   }

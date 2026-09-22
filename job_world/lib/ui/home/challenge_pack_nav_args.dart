@@ -10,6 +10,7 @@ class ChallengePackTopicArgs {
   });
 
   bool get isMcq => sourceType.toUpperCase() == 'MCQ';
+
 }
 
 class ChallengePackExamsArgs {

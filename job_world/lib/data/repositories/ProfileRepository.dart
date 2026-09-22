@@ -259,6 +259,8 @@ class ProfileRepository {
         parser: (data) {
           if (data is List) {
             return data.map((e) => MasterSkillModel.fromJson(e)).toList();
+          } else if (data is Map<String, dynamic> && data['results'] is List) {
+            return (data['results'] as List).map((e) => MasterSkillModel.fromJson(e)).toList();
           }
           return <MasterSkillModel>[];
         },
@@ -415,7 +417,26 @@ class ProfileRepository {
 
   // Master Data Methods
   Future<List<EducationMasterModel>> getEducationTypes() async {
-    return _fetchMasterData(ApiConstants.eduTypesMaster);
+    try {
+      return await _client.request<List<EducationMasterModel>>(
+        ApiConstants.eduTypesMaster,
+        method: 'GET',
+        parser: (data) {
+          List list = [];
+          if (data is List) {
+            list = data;
+          } else if (data is Map<String, dynamic> && data['results'] is List) {
+            list = data['results'];
+          }
+          return list.map((e) => EducationMasterModel(
+            id: e['id'],
+            name: e['name'] ?? e['edu_type_name'] ?? e['education_type_name'] ?? e['qualification_name'] ?? e['type_name'] ?? '',
+          )).toList();
+        },
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future<List<EducationMasterModel>> getInstitutions() async {
@@ -489,16 +510,19 @@ class ProfileRepository {
   Future<List<EducationMasterModel>> getDepartments() async {
     try {
       return await _client.request<List<EducationMasterModel>>(
-        ApiConstants.departmentsEndpoint,
+        ApiConstants.allDeptDropdownEndpoint,
         method: 'GET',
         parser: (data) {
+          List list = [];
           if (data is List) {
-            return data.map((e) => EducationMasterModel(
-              id: e['id'],
-              name: e['department_name'] ?? e['name'] ?? '',
-            )).toList();
+            list = data;
+          } else if (data is Map<String, dynamic> && data['results'] is List) {
+            list = data['results'];
           }
-          return <EducationMasterModel>[];
+          return list.map((e) => EducationMasterModel(
+            id: e['id'],
+            name: e['name'] ?? e['department_name'] ?? '',
+          )).toList();
         },
       );
     } catch (e) {
@@ -514,6 +538,8 @@ class ProfileRepository {
         parser: (data) {
           if (data is List) {
             return data.map((e) => EducationMasterModel.fromJson(e)).toList();
+          } else if (data is Map<String, dynamic> && data['results'] is List) {
+            return (data['results'] as List).map((e) => EducationMasterModel.fromJson(e)).toList();
           }
           return <EducationMasterModel>[];
         },

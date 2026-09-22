@@ -356,9 +356,9 @@ class _AiInterviewScreenState extends ConsumerState<AiInterviewScreen> {
     );
   }
 
-  // ----------------------------------------------------------
-  // FOCUS AREA DROPDOWN (from /interview/bot-interview-configs/)
-  // ----------------------------------------------------------
+  // ---------------------------------------------------------- //
+  // FOCUS AREA DROPDOWN(from/interview/bot-interview-configs/) //
+  // ---------------------------------------------------------- //
 
   Widget _buildFocusAreaDropdown(BuildContext context, AiInterviewState state) {
     return state.configs.when(

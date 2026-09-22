@@ -39,6 +39,84 @@ class TlJobModel {
   });
 }
 
+/// A user returned by `GET /user/users/?context=jobpost_assign`, used to
+/// populate the "Assigned Recruiter" dropdown on the Post Job wizard.
+class TlJobAssignUserModel {
+  final int id;
+  final String username;
+  final String roleName;
+
+  const TlJobAssignUserModel({
+    required this.id,
+    required this.username,
+    required this.roleName,
+  });
+
+  factory TlJobAssignUserModel.fromJson(Map<String, dynamic> json) {
+    return TlJobAssignUserModel(
+      id: json['id'] ?? 0,
+      username: json['username'] ?? '',
+      roleName: json['role_name'] ?? '',
+    );
+  }
+}
+
+/// One entry from `GET /jobpost/jobs/{id}/approval-history/` — a stage
+/// transition in the job post's approval workflow.
+class TlJobApprovalHistoryEntry {
+  final String by;
+  final String to;
+  final String from;
+  final String time;
+  final String event;
+  final String byRole;
+  final String? comment;
+  final String? departmentName;
+  final bool? isOverride;
+
+  const TlJobApprovalHistoryEntry({
+    required this.by,
+    required this.to,
+    required this.from,
+    required this.time,
+    required this.event,
+    required this.byRole,
+    this.comment,
+    this.departmentName,
+    this.isOverride,
+  });
+
+  factory TlJobApprovalHistoryEntry.fromJson(Map<String, dynamic> json) {
+    return TlJobApprovalHistoryEntry(
+      by: json['by'] ?? '',
+      to: json['to'] ?? '',
+      from: json['from'] ?? '',
+      time: json['time'] ?? '',
+      event: json['event'] ?? '',
+      byRole: json['by_role'] ?? '',
+      comment: json['comment'],
+      departmentName: json['department_name'],
+      isOverride: json['is_override'],
+    );
+  }
+}
+
+class TlJobApprovalHistoryModel {
+  final List<TlJobApprovalHistoryEntry> history;
+  final String currentStage;
+
+  const TlJobApprovalHistoryModel({required this.history, required this.currentStage});
+
+  factory TlJobApprovalHistoryModel.fromJson(Map<String, dynamic> json) {
+    return TlJobApprovalHistoryModel(
+      history: (json['history'] as List? ?? const [])
+          .map((e) => TlJobApprovalHistoryEntry.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      currentStage: json['current_stage'] ?? '',
+    );
+  }
+}
+
 class TlCandidateModel {
   final String id;
   final String name;
@@ -79,162 +157,3 @@ class TlCandidateModel {
     );
   }
 }
-
-// ---------------------------------------------------------------------------
-// MOCK DATA
-// ---------------------------------------------------------------------------
-
-const List<TlJobModel> mockTlJobs = [
-  TlJobModel(
-    id: 'j1',
-    reqId: 'REQ-2024-090',
-    title: 'iOS Developer',
-    location: 'Mumbai',
-    experience: '0-2 Years',
-    openings: 2,
-    salary: '₹500,000',
-    employmentType: 'Full Time',
-    status: 'Open',
-    company: 'ORBIT TECHSOL PVT LTD',
-    locations: ['Mumbai', 'Navi Mumbai', 'Pune'],
-    description:
-        "We are looking for an iOS Developer who possesses a passion for pushing mobile technologies to the limits. You will work with our team of talented engineers to design and build the next generation of our mobile applications. Expertise in Swift, SwiftUI, and general iOS Development is required.",
-    skills: ['Swift', 'SwiftUI', 'iOS SDK', 'Core Data'],
-    appliedCount: 24,
-    walkInCount: 150,
-  ),
-  TlJobModel(
-    id: 'j2',
-    reqId: 'REQ-2024-081',
-    title: 'Junior Python Developer',
-    location: 'Pune',
-    experience: '0-2 Yrs',
-    openings: 1,
-    salary: '₹65,000',
-    employmentType: 'Full Time',
-    status: 'Open',
-    company: 'ORBIT TECHSOL PVT LTD',
-    locations: ['Pune'],
-    description:
-        "We are looking for a Junior Python Developer to join our engineering team, working on backend services and internal automation tooling under senior mentorship.",
-    skills: ['Python', 'Django', 'SQL'],
-    appliedCount: 12,
-    walkInCount: 80,
-  ),
-  TlJobModel(
-    id: 'j3',
-    reqId: 'REQ-2024-082',
-    title: 'Node.js Developer',
-    location: 'Pune',
-    experience: '0-3 Yrs',
-    openings: 2,
-    salary: '₹1,10,000',
-    employmentType: 'Full Time',
-    status: 'Open',
-    company: 'ORBIT TECHSOL PVT LTD',
-    locations: ['Pune'],
-    description:
-        "We are looking for a Node.js Developer to build and maintain scalable REST APIs and microservices powering our core platform.",
-    skills: ['Node.js', 'Express', 'MongoDB'],
-    appliedCount: 18,
-    walkInCount: 60,
-  ),
-  TlJobModel(
-    id: 'j4',
-    reqId: 'REQ-2024-068',
-    title: 'Data Analyst',
-    location: 'Hyderabad',
-    experience: '1-3 Yrs',
-    openings: 1,
-    salary: '₹90,000',
-    employmentType: 'Full Time',
-    status: 'Closed',
-    company: 'ORBIT TECHSOL PVT LTD',
-    locations: ['Hyderabad'],
-    description:
-        "We are looking for a Data Analyst to turn raw hiring & business data into actionable dashboards and reports for leadership.",
-    skills: ['SQL', 'Excel', 'Power BI'],
-    appliedCount: 9,
-    walkInCount: 20,
-  ),
-];
-
-List<TlCandidateModel> mockAppliedCandidates(String jobId) => const [
-      TlCandidateModel(
-        id: 'a1',
-        name: 'Ajinkya',
-        email: 'Ajjinkya@example.com',
-        phone: '91456587980',
-        initial: 'A',
-        avatarColor: Color(0xFF6366F1),
-        statusTags: ['Done', 'Approved', 'Pending'],
-        score: 67.82,
-        source: 'Applied',
-      ),
-      TlCandidateModel(
-        id: 'a2',
-        name: 'Radhika Chandak',
-        email: 'Radha78@example.com',
-        phone: '91456587980',
-        initial: 'R',
-        avatarColor: Color(0xFF6366F1),
-        statusTags: ['Done', 'Approved', 'Pending'],
-        score: 67.82,
-        source: 'Applied',
-      ),
-      TlCandidateModel(
-        id: 'a3',
-        name: 'Akshay Jadhav',
-        email: 'akshay@example.com',
-        initial: 'A',
-        avatarColor: Color(0xFF6366F1),
-        statusTags: ['In Review'],
-        source: 'Applied',
-      ),
-      TlCandidateModel(
-        id: 'a4',
-        name: 'Shreya Desai',
-        email: 'shreya@example.com',
-        phone: '91456587980',
-        initial: 'S',
-        avatarColor: Color(0xFF10B981),
-        statusTags: ['In Review'],
-        source: 'Applied',
-      ),
-    ];
-
-List<TlCandidateModel> mockWalkInCandidates(String jobId) => const [
-      TlCandidateModel(
-        id: 'w1',
-        name: 'Ajinkya',
-        email: 'Ajjinkya@example.com',
-        phone: '91456587980',
-        initial: 'A',
-        avatarColor: Color(0xFF6366F1),
-        statusTags: ['Done', 'Approved', 'Pending'],
-        score: 67.82,
-        source: 'Walk-in',
-      ),
-      TlCandidateModel(
-        id: 'w2',
-        name: 'Radhika Chandak',
-        email: 'Radha78@example.com',
-        phone: '91456587980',
-        initial: 'R',
-        avatarColor: Color(0xFF6366F1),
-        statusTags: ['Done', 'Approved', 'Pending'],
-        score: 67.82,
-        source: 'Walk-in',
-      ),
-      TlCandidateModel(
-        id: 'w3',
-        name: 'Radhika Chandak',
-        email: 'Radha78@example.com',
-        phone: '91456587980',
-        initial: 'R',
-        avatarColor: Color(0xFF6366F1),
-        statusTags: ['Done', 'Approved', 'Pending'],
-        score: 67.82,
-        source: 'Walk-in',
-      ),
-    ];

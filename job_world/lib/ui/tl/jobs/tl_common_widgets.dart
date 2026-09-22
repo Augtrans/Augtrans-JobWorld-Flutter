@@ -258,6 +258,48 @@ class TlCard extends StatelessWidget {
   }
 }
 
+/// Shown wherever a list has no data and there is no mock fallback to fall
+/// back on — e.g. a candidate list before the API is wired up, or an empty
+/// API response.
+class TlNoDataFound extends StatelessWidget {
+  final String message;
+
+  const TlNoDataFound({super.key, this.message = "No data found"});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 60),
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.inbox_outlined, size: 40, color: Colors.grey.shade400),
+            const SizedBox(height: 12),
+            Text(message, style: TextStyle(fontSize: 13, color: Colors.grey.shade500, fontWeight: FontWeight.w600)),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Full-page fallback for a route that needed data (e.g. a job passed via
+/// `extra`) that was never supplied — shows "No data found" instead of
+/// falling back to a fabricated placeholder.
+class TlNoDataScreen extends StatelessWidget {
+  const TlNoDataScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFFF8FAFC),
+      appBar: const TlHeaderBar(title: ""),
+      body: const SafeArea(top: false, child: TlNoDataFound()),
+    );
+  }
+}
+
 void showTlSnack(BuildContext context, String message) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(

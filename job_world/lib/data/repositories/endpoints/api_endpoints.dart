@@ -23,10 +23,15 @@ class ApiConstants {
   static const String jobPreferencesEndpoint = '/jobpost/job-preferences/';
   
   // Job Post / Preferences Masters
+  static const String tlPostedJobsEndpoint = '/jobpost/post-jobs/';
   static const String employmentTypesEndpoint = '/jobpost/employment-types/';
   static const String salaryUnitsEndpoint = '/jobpost/salary-units/';
   static const String industriesEndpoint = '/jobpost/industries/';
-  static const String departmentsEndpoint = '/jobpost/departments/'; // Added based on typical flow
+  static const String departmentsEndpoint = '/jobpost/departments/';
+  static const String continentsEndpoint = '/jobpost/continents/';
+  static const String countriesEndpoint = '/jobpost/countries/';
+  static const String locationsEndpoint = '/jobpost/locations/';
+  static const String workModesEndpoint = '/jobpost/work-modes/';
 
   // Masters
   static const String eduTypesMaster = '/user/masters/edu-types/';
@@ -67,5 +72,20 @@ class ApiConstants {
 
   // Wallet
   static const String walletEndpoint = '/wallets/wallet/';
+
+  // AI Refine
+  static const String aiRefineEndpoint = '/user/ai-refine/refine/';
+
+  // Job post assignment
+  static const String jobPostAssignUsersEndpoint = '/user/users/';
+
+  // Job post approval history
+  static const String jobApprovalHistoryBase = '/jobpost/jobs/';
+
+  // CV approval
+  static const String attachedCvsEndpoint = '/jobpost/attached-cvs/';
+
+  // Rank CVs for a job — GET {tlPostedJobsEndpoint}{jobId}/rank-cvs/
+  static const String rankCvsSuffix = 'rank-cvs/';
 
 }

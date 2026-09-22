@@ -24,7 +24,7 @@ class _TlWalkinCvPoolScreenState extends State<TlWalkinCvPoolScreen> {
   @override
   void initState() {
     super.initState();
-    _candidates = mockWalkInCandidates(widget.job.id);
+    _candidates = [];
   }
 
   @override
@@ -76,10 +76,13 @@ class _TlWalkinCvPoolScreenState extends State<TlWalkinCvPoolScreen> {
             children: [
               TlSearchFilterBar(controller: _searchController, onFilterTap: () => showTlSnack(context, "Filters coming soon")),
               Dimensions.verticalSpace(context, 16),
-              for (int i = 0; i < _candidates.length; i++) ...[
-                _buildCard(context, i),
-                const SizedBox(height: 14),
-              ],
+              if (_candidates.isEmpty)
+                const TlNoDataFound()
+              else
+                for (int i = 0; i < _candidates.length; i++) ...[
+                  _buildCard(context, i),
+                  const SizedBox(height: 14),
+                ],
             ],
           ),
         ),
