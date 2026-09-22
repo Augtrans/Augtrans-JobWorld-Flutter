@@ -44,12 +44,14 @@ import 'package:job_world/ui/tl/tl_main_navigation_screen.dart';
 import 'package:job_world/ui/tl/home/tl_home_screen.dart';
 import 'package:job_world/ui/tl/jobs/tl_job_listings_screen.dart';
 import 'package:job_world/ui/tl/jobs/tl_job_detail_screen.dart';
-import 'package:job_world/ui/tl/jobs/tl_applied_candidates_screen.dart';
+import 'package:job_world/ui/tl/jobs/tl_post_job_screen.dart';
+import 'package:job_world/data/model/jobpost/TlJobPostModel.dart';
 import 'package:job_world/ui/tl/jobs/tl_walkin_cv_pool_screen.dart';
 import 'package:job_world/ui/tl/jobs/tl_add_remark_screen.dart';
 import 'package:job_world/ui/tl/jobs/tl_timeline_screen.dart';
 import 'package:job_world/ui/tl/jobs/tl_hiring_report_screen.dart';
 import 'package:job_world/ui/tl/jobs/tl_models.dart';
+import 'package:job_world/ui/tl/jobs/tl_common_widgets.dart';
 import 'app_navigator.dart';
 
 class AppRoutes {
@@ -92,7 +94,7 @@ class AppRoutes {
   static const tlHome = "/tl-home";
   static const tlJobListings = "/tl-job-listings";
   static const tlJobDetail = "/tl-job-detail";
-  static const tlAppliedCandidates = "/tl-applied-candidates";
+  static const tlPostJob = "/tl-post-job";
   static const tlWalkinCvPool = "/tl-walkin-cv-pool";
   static const tlAddRemark = "/tl-add-remark";
   static const tlTimeline = "/tl-timeline";
@@ -422,22 +424,22 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.tlJobDetail,
       builder: (context, state) {
-        final job = state.extra is TlJobModel ? state.extra as TlJobModel : mockTlJobs.first;
-        return TlJobDetailScreen(job: job);
+        final jobId = state.extra is int ? state.extra as int : 0;
+        return TlJobDetailScreen(jobId: jobId);
       },
     ),
     GoRoute(
-      path: AppRoutes.tlAppliedCandidates,
+      path: AppRoutes.tlPostJob,
       builder: (context, state) {
-        final job = state.extra is TlJobModel ? state.extra as TlJobModel : mockTlJobs.first;
-        return TlAppliedCandidatesScreen(job: job);
+        final existingJob = state.extra is TlJobPostModel ? state.extra as TlJobPostModel : null;
+        return TlPostJobScreen(existingJob: existingJob);
       },
     ),
     GoRoute(
       path: AppRoutes.tlWalkinCvPool,
       builder: (context, state) {
-        final job = state.extra is TlJobModel ? state.extra as TlJobModel : mockTlJobs.first;
-        return TlWalkinCvPoolScreen(job: job);
+        if (state.extra is! TlJobModel) return const TlNoDataScreen();
+        return TlWalkinCvPoolScreen(job: state.extra as TlJobModel);
       },
     ),
     GoRoute(

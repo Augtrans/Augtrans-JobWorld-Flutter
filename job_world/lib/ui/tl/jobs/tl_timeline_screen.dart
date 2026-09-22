@@ -31,30 +31,7 @@ class TlTimelineScreen extends StatelessWidget {
 
   const TlTimelineScreen({super.key, this.candidate});
 
-  static const List<_TimelineStep> _steps = [
-    _TimelineStep(
-      title: "Submitted for Approval",
-      actor: "orbit_TL",
-      role: "Team Lead",
-      time: "5:26 PM",
-      tags: ["PRIORITY: HIGH", "INITIAL"],
-    ),
-    _TimelineStep(
-      title: "Manager Verification",
-      actor: "orbit_Manager",
-      role: "Reporting Manager",
-      time: "5:30 PM",
-      tags: ["Verified Skills & Budget Alignment"],
-    ),
-    _TimelineStep(
-      title: "Final Approval: HR Head",
-      actor: "orbit_hr_head",
-      role: "HR Head",
-      time: "5:51 PM",
-      comment: "Candidate matches technical benchmarks. Proceed with offer letter for iOS Dev role immediately.",
-      isFinal: true,
-    ),
-  ];
+  static const List<_TimelineStep> _steps = [];
 
   @override
   Widget build(BuildContext context) {
@@ -71,41 +48,11 @@ class TlTimelineScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20)),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 34,
-                      height: 34,
-                      decoration: const BoxDecoration(color: Color(0xFFDCFCE7), shape: BoxShape.circle),
-                      child: const Icon(Icons.check_rounded, size: 18, color: Color(0xFF16A34A)),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Current Phase", style: TextStyle(fontSize: 11, color: Colors.grey.shade500, fontWeight: FontWeight.w600)),
-                          const SizedBox(height: 2),
-                          const Text("Final Approval", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Color(0xFF0F172A))),
-                        ],
-                      ),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text("Time Elapsed", style: TextStyle(fontSize: 11, color: Colors.grey.shade500, fontWeight: FontWeight.w600)),
-                        const SizedBox(height: 2),
-                        const Text("2h 25m", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Color(0xFF0F172A))),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Dimensions.verticalSpace(context, 24),
-              for (int i = 0; i < _steps.length; i++) _buildStep(context, i),
+              if (_steps.isEmpty)
+                const TlNoDataFound()
+              else ...[
+                for (int i = 0; i < _steps.length; i++) _buildStep(context, i),
+              ],
             ],
           ),
         ),
